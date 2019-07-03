@@ -1,0 +1,21 @@
+sudo: required
+
+language: java
+
+services:
+  - docker
+
+jdk:
+  - openjdk8
+
+before_install:
+  - chmod +x ./mvnw
+  - docker version
+  - docker info
+
+script:
+  - "./mvnw clean package dockerfile:build dockerfile:tag dockerfile:push"
+
+cache:
+  directories:
+    - $HOME/.m2/
