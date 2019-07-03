@@ -1,4 +1,4 @@
-## Gitlab Webhook 推送到企业微信 [![build status](https://api.travis-ci.org/junbaor/gitlab_workwechat.svg?branch=master)](https://travis-ci.org/junbaor/gitlab_workwechat)
+## Gitlab Webhook 推送到企业微信 [![build status](https://api.travis-ci.org/junbaor/platelet.svg?branch=master)](https://travis-ci.org/junbaor/platelet)
 
 ### 部署
 #### java 方式
