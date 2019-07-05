@@ -65,6 +65,13 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!-- 尚未添加到构建过程中, 可以时不时运行检查一下 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.11.0</version>
+            </plugin>
+
             <!-- tag::plugin[] -->
             <plugin>
                 <groupId>com.spotify</groupId>
@@ -107,5 +114,4 @@
             <!-- end::unpack[] -->
         </plugins>
     </build>
-
 </project>
