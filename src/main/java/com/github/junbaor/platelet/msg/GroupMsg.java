@@ -1,11 +1,15 @@
 package com.github.junbaor.platelet.msg;
 
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.github.junbaor.platelet.util.AppUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.dongliu.requests.Requests;
 import org.springframework.util.StringUtils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -53,10 +57,8 @@ public class GroupMsg implements IGroupMsg {
         boolean flag = false;
 
         log.info("wechat request:{}", JSONObject.toJSONString(hashMap));
-        String response = Requests.post(getWorkWechatUrl())
-                .jsonBody(hashMap)
-                .timeout(2000, 2000)
-                .send().readToText();
+        String response = new String(HttpUtil.post(getWorkWechatUrl(), JSONUtil.toJsonStr(hashMap),2000).getBytes(StandardCharsets.UTF_8));
+
         log.info("wechat reponse:{}", response);
 
         if (!StringUtils.isEmpty(response)) {
