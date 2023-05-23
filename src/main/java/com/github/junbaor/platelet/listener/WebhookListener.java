@@ -1,13 +1,17 @@
 package com.github.junbaor.platelet.listener;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.junbaor.platelet.msg.GroupMsg;
+import com.github.junbaor.platelet.util.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.gitlab4j.api.models.Job;
 import org.gitlab4j.api.webhook.*;
 import org.slf4j.MDC;
 
 import javax.inject.Named;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Named
@@ -109,6 +113,35 @@ public class WebhookListener implements WebHookListener {
                 .append(" at repository ")
                 .append("[").append(projectName).append("]")
                 .append("(").append(projectUrl).append(")");
+
+        GroupMsg.getInstance(botKey).sendMarkdownMsg(content.toString());
+    }
+
+    @Override
+    public void onPipelineEvent(PipelineEvent event) {
+        String botKey = MDC.get("key");
+
+        StringBuilder content = new StringBuilder();
+
+        Map<String,String> queryParams = RequestUtils.getQueryMap(event.getRequestQueryString());
+
+        if(queryParams.containsKey("branch") && !event.getObjectAttributes().getRef().equals(queryParams.get("branch"))){
+            return;
+        }
+
+        content.append("**").append(event.getProject().getName()).append(" pipeline event**\n");
+        content.append("> \n");
+        content.append("> branch:").append(event.getObjectAttributes().getRef()).append("\n");
+        content.append("> \n");
+        content.append("> user:").append(event.getUser().getName()).append("\n");
+        content.append("> \n");
+        content.append("> commit message:").append(event.getCommit().getMessage()).append("\n");
+        content.append("> \n");
+        content.append("> start at:").append(DateUtil.format(event.getObjectAttributes().getCreatedAt(), "yyyy-MM-dd HH:mm:ss")).append("\n");
+        content.append("> \n");
+        content.append("> end at:").append(DateUtil.format(event.getObjectAttributes().getFinishedAt(), "yyyy-MM-dd HH:mm:ss")).append("\n");
+        content.append("> \n");
+        content.append("> status:").append(event.getObjectAttributes().getStatus()).append("\n");
 
         GroupMsg.getInstance(botKey).sendMarkdownMsg(content.toString());
     }
