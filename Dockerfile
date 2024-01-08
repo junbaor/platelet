@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:11-jdk-slim
 ENV TZ='Asia/Shanghai'
 EXPOSE 8081
 VOLUME /tmp
